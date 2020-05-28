@@ -1,0 +1,2 @@
+Basic currency calculator which converts given EUR value to value in chosen currency.
+Unit tests located in test package allows to check if program operates correctly given valid or invalid input.
