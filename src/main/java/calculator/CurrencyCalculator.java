@@ -11,21 +11,25 @@ public class CurrencyCalculator {
     public BigDecimal calculateRate(BigDecimal amountInEuro, String currencyName) {
         initialize();
 
-        List<CurrencyRate> desiredCurrencyRate = currencyRates.stream()
+        if (amountInEuro == null) {
+            throw new IllegalArgumentException("Please provide valid amount in euro");
+        }
+
+        List<CurrencyRate> desiredCurrencyRateList = currencyRates.stream()
                 .filter(rate -> rate.getName().equals(currencyName))
                 .collect(Collectors.toList());
 
-        if (desiredCurrencyRate.size() == 0) {
-            throw new IllegalArgumentException();
+        if (desiredCurrencyRateList.size() == 0) {
+            throw new IllegalArgumentException("Currency not available");
         }
 
-        if (desiredCurrencyRate.size() > 1) {
-            throw new IllegalArgumentException();
+        if (desiredCurrencyRateList.size() > 1) {
+            throw new IllegalArgumentException("Currency rate is listed more than once");
         }
 
-        CurrencyRate destinationCurrencyRate = desiredCurrencyRate.get(0);
+        CurrencyRate desiredCurrencyRate = desiredCurrencyRateList.get(0);
 
-        return amountInEuro.multiply(destinationCurrencyRate.getRate()).stripTrailingZeros();
+        return desiredCurrencyRate.getRate().multiply(amountInEuro).stripTrailingZeros();
     }
 
     private void initialize() {
